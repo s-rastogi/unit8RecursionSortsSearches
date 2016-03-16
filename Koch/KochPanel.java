@@ -12,7 +12,7 @@ public class KochPanel extends JPanel
    private final int PANEL_WIDTH = 400;
    private final int PANEL_HEIGHT = 400;
 
-   private final double SQ = Math.sqrt(3.0) / ;
+   private final double SQ = Math.sqrt(3.0) / 3 ;
 
    private final int TOPX = 200, TOPY = 20;
    private final int LEFTX = 60, LEFTY = 300;
