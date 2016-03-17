@@ -29,7 +29,15 @@ public class TreeComponent extends JPanel
       setBackground (Color.black);
       setPreferredSize (new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
    }
-
+   
+   
+   
+   
+   
+   
+   
+   
+   
    //-----------------------------------------------------------------
    //  Draws the fractal recursively. Base case is an order of 1 for
    //  which a simple straight line is drawn. Otherwise three
@@ -39,31 +47,18 @@ public class TreeComponent extends JPanel
    public void drawFractal (int order, int x1, int y1, int x5, int y5,
                             Graphics page)
    {
-      int deltaX, deltaY, x2, y2, x3, y3, x4, y4;
+     
 
       if (order == 1)
-         page.drawLine (x1, y1, x5, y5);
+         
       else
       {
-         deltaX = x5 - x1;  // distance between end points
-         deltaY = y5 - y1;
-
-         x2 = x1 + deltaX / 3;  // one third
-         y2 = y1 + deltaY / 3;
-
-         x3 = (int) ((x1+x5)/2 + SQ * (y1-y5));  // tip of projection
-         y3 = (int) ((y1+y5)/2 + SQ * (x5-x1));
-
-         x4 = x1 + deltaX * 2/3;  // two thirds
-         y4 = y1 + deltaY * 2/3;
-
-         drawFractal (order-1, x1, y1, x2, y2, page);
-         drawFractal (order-1, x2, y2, x3, y3, page);
-         drawFractal (order-1, x3, y3, x4, y4, page);
-         drawFractal (order-1, x4, y4, x5, y5, page);
+        
       }
+
    }
 
+   public void branch( double dLength, int startX, int startY,
    //-----------------------------------------------------------------
    //  Performs the initial calls to the drawFractal method.
    //-----------------------------------------------------------------
