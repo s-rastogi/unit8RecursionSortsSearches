@@ -1,91 +1,83 @@
-//********************************************************************
-//  KochPanel.java       Author: Lewis/Loftus/Cocking
-//
-//  Represents a drawing of the tree with the most hype
-//********************************************************************
-
 import java.awt.*;
 import javax.swing.JPanel;
-
+/**
+ * This class draws a singular tree using the recursion we learned in class :DDDDD
+ * 
+ * @author Saahil Rastogi
+ * @version 3/20/2016
+ */
 public class TreeComponent extends JPanel
 {
-   private final int PANEL_WIDTH = 400;
-   private final int PANEL_HEIGHT = 400;
+    //the panel dimensions
+    private final int PANEL_WIDTH = 1000;
+    private final int PANEL_HEIGHT = 1000;
+    //final variables for my angle multiplier and the one I subtract//add from
+    private final double MULTIPLIER = .8;
+    private final double ANGLE = Math.PI / 6;
+    //knows the current order
+    private int currOrder;
 
-   private final double SQ = Math.sqrt(3.0) / 6 ;
+    /**
+     * Default constructor for objects of class FractalTreePanel
+     */
+    public TreeComponent(int currentOrder)
+    {
+       // intializes the current order instance variable; set the the color of backround to the intended color; and sets the  size to the previous mentioned variables
+        this.setBackground(Color.YELLOW);
+        this.currOrder = currentOrder;
+        this.setPreferredSize(new Dimension(this.WIDTH, this.HEIGHT));
 
-   private final int TOPX = 200, TOPY = 20;
-   private final int LEFTX = 60, LEFTY = 300;
-   private final int RIGHTX = 340, RIGHTY = 300;
+    }
 
-   private int current; //current order
-
-   //-----------------------------------------------------------------
-   //  Sets the initial fractal order to the value specified.
-   //-----------------------------------------------------------------
-   public TreeComponent (int currentOrder)
-   {
-      current = currentOrder;
-      setBackground (Color.black);
-      setPreferredSize (new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
-   }
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   //-----------------------------------------------------------------
-   //  Draws the fractal recursively. Base case is an order of 1 for
-   //  which a simple straight line is drawn. Otherwise three
-   //  intermediate points are computed, and each line segment is
-   //  drawn as a fractal.
-   //-----------------------------------------------------------------
-   public void drawFractal (int order, int x1, int y1, int x5, int y5,
-                            Graphics page)
-   {
-     
-
-      if (order == 1)
-         
-      else
-      {
-        
-      }
-
-   }
-
-   public void branch( double dLength, int startX, int startY,
-   //-----------------------------------------------------------------
-   //  Performs the initial calls to the drawFractal method.
-   //-----------------------------------------------------------------
-   public void paintComponent (Graphics page)
-   {
-      super.paintComponent (page);
-
-      page.setColor (Color.green);
-
-      drawFractal (current, TOPX, TOPY, LEFTX, LEFTY, page);
-      drawFractal (current, LEFTX, LEFTY, RIGHTX, RIGHTY, page);
-      drawFractal (current, RIGHTX, RIGHTY, TOPX, TOPY, page);
-   }
-
-   //-----------------------------------------------------------------
-   //  Sets the fractal order to the value specified.
-   //-----------------------------------------------------------------
-   public void setOrder (int order)
-   {
-      current = order;
-   }
-
-   //-----------------------------------------------------------------
-   //  Returns the current order.
-   //-----------------------------------------------------------------
-   public int getOrder ()
-   {
-      return current;
-   }
+    /**
+     *This methods uses the ways of recursion to draw the next branch (10) with the angle intended
+     *
+     * the x and y starting parameters are the starting points for the line
+     */
+    public void drawBranch(int order, int startX, int startY, int startX2 , int startY2, double angle, Graphics g2)
+    {
+        double newX;
+        double newY; 
+        double posX;
+        double posY;
+        double negX;
+        double negY;
+        //draws the first line if order is 1
+        if (order == 1)
+        {
+            g2.drawLine(startX, startY, startX2, startY2);
+        }
+        //draws 2 branches if its greater than 1
+        else
+        {
+            g2.drawLine(startX, startY, startX2, startY2);
+            //Creating a new x and y for the new and shorter length of the branch
+            newX = startX2 - startX;
+            newY = startY2 - startY;
+            double length = (Math.sqrt(newX * newX + newY * newY)) * MULTIPLIER;
+            //Creates two new angles, one that adds angle, and one that subtract angle( added the .1 for cool effect)
+            double newPosAngle = angle + ANGLE +.1;
+            double newNegAngle = angle - ANGLE -.1;
+            //i used that trig to find that angle 
+            posX = startX2 - Math.sin(newPosAngle) * length;
+            posY = startY2 - Math.cos(newPosAngle) * length;
+            negX = startX2 - Math.sin(newNegAngle) * length;
+            negY = startY2 - Math.cos(newNegAngle) * length;
+            //used the recursion to go back to the mehtod
+            this.drawBranch(order - 1, startX2, startY2, (int) posX, (int) posY, newPosAngle, g2);
+            this.drawBranch(order - 1, startX2, startY2, (int) negX, (int) negY, newNegAngle, g2);
+        }
+    }
+    
+    public void paintComponent(Graphics g)
+    {
+        Graphics g2 = (Graphics2D) g;
+        super.paintComponent (g2);
+        this.drawBranch(currOrder, 600, 800, 600, 600, 0, g2);
+    }
+    
+    public void setOrder(int order)
+    {
+        this.currOrder = order;
+    }
 }
